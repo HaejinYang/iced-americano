@@ -44,7 +44,6 @@ class RequestContext
             }
         }
 
-        var_dump($params);
         return $params;
     }
 
