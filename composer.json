@@ -1,0 +1,19 @@
+{
+    "name": "thumbsupcat/iced-americano",
+    "description": "micro framework written in PHP",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "Thumbsupcat\\IcedAmericano\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "haejin.yang91",
+            "email": "haejin.yang91@gmail.com"
+        }
+    ],
+    "require": {}
+}
