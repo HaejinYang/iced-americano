@@ -11,6 +11,12 @@ PHP로 작성된 웹 서비스용 마이크로 프레임워크
 - 테마: 템플릿 엔진과 유사하게 HTML 템플릿을 선택하고 변수를 건네어 페이지를 유저에게 보여줄 수 있다.
 - 모듈화: 유저가 제공한 모듈을 기반으로 웹 서비스가 동작한다.
 # 구현
+## 전체 실행 흐름
+![전체실행흐름](reference/실행흐름.png)
+클라이언트의 요청을 엔트리 포인트(index.php)에서 받아 Application을 실행한다.
+Application은 프레임워크에서 제공하는 클래스로 ServiceProvider가 저장된다.
+ServiceProdiver는 유저가 웹 서비스로 제공하려는 기능을 담는 클래스이다. 라우팅, 세션 관리 혹은 타임존 세팅 등 모든 기능이 정의된다.
+Application은 등록된 ServiceProvider들을 차례대로 실행하고, 클라이언트에 응답한다.
 ## 라우팅
 - 디렉토리: Routing
 - 파일: Route.php, RequestContext.php, Middleware.php
@@ -49,6 +55,7 @@ PHP로 작성된 웹 서비스용 마이크로 프레임워크
 - 디렉토리: Support
 - 파일: ServiceProvider.php
 - ServiceProvider는 유저가 서비스(서버가 실행되는 동안 진행할 로직)를 등록할 수 있도록 제공하는 껍데기이다.
+- ServiceProvider라는 박스에 에러 핸들링, 세션 관리, 데이터베이스 제어, 라우팅, 테마 등의 기능을 담아 Application에 제공한다.
 - 최초에 abstract class였지만 내부 동작이 없기에 interface로 변경하였다.
 ## Application
 - 디렉토리: 루트(src디렉토리)
