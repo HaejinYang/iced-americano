@@ -1,6 +1,10 @@
 <?php
 namespace Thumbsupcat\IcedAmericano\Routing;
 
+/*
+ * Route는 HTTP 요청을 등록하고 실행한다.
+ * HTTP 메소드, 경로, 핸들러, 미들웨어는 하나의 RequestContext가 되어 Route에 등록된다.
+ */
 class RequestContext
 {
     public string $path;
@@ -16,6 +20,9 @@ class RequestContext
         $this->middlewares = $middlewares;
     }
 
+    /*
+     *
+     */
     public function match($url)
     {
         /*

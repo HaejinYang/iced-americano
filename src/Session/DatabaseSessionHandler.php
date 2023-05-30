@@ -52,5 +52,4 @@ class DatabaseSessionHandler implements \SessionHandlerInterface
     {
         return Adaptor::exec("UPDATE session SET `payload` = ? WHERE `id` = ?", [$data, $id]);
     }
-
 }
