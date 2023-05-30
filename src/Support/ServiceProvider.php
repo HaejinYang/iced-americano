@@ -9,14 +9,8 @@ namespace Thumbsupcat\IcedAmericano\Support;
  * 이런 것들은 모두 서비스 프로바이더에서 한다.
  *
  */
-abstract class ServiceProvider
+interface ServiceProvider
 {
-    public static function register()
-    {
-
-    }
-
-    public static function boot()
-    {
-    }
+    public static function register();
+    public static function boot();
 }
