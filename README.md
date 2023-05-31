@@ -17,7 +17,31 @@ PHP로 작성된 웹 서비스용 마이크로 프레임워크
 Application은 프레임워크에서 제공하는 클래스로 ServiceProvider가 저장된다.
 ServiceProdiver는 유저가 웹 서비스로 제공하려는 기능을 담는 클래스이다. 라우팅, 세션 관리부터 타임존 설정 등 모든 동작이 정의된다.
 Application은 등록된 ServiceProvider들을 차례대로 실행하고, 클라이언트에 응답한다.
-## 라우팅
+## 디렉토리 구조
+```
+src
+    │  Application.php
+    │
+    ├─Database
+    │      Adaptor.php
+    │
+    ├─Http
+    │      Request.php
+    │
+    ├─Routing
+    │      Middleware.php
+    │      RequestContext.php
+    │      Route.php
+    │
+    ├─Session
+    │      DatabaseSessionHandler.php
+    │
+    └─Support
+            ServiceProvider.php
+            Theme.php
+```
+## 세부 사항
+### 라우팅
 - 디렉토리: Routing
 - 파일: Route.php, RequestContext.php, Middleware.php
 - 라우팅은 HTTP 요청에 대한 응답을 정의한다. HTTP 메서드, 경로, 응답 동작을 정의한 핸들러가 있다.
@@ -29,38 +53,39 @@ Application은 등록된 ServiceProvider들을 차례대로 실행하고, 클라
 - `Route`는 라우팅을 담당하는 주체이다. `RequestContext`를 이용하여 라우트를 등록하고, 실행할 수 있다.
   - `run`메서드는 HTTP 요청 정보와 등록된 라우트를 비교하여 실행한다.
   - get, post, delete 등의 HTTP 메서드와 경로를 확인하고, 동적 경로에 해당하는 데이터를 추출하여 핸들러와 함께 호출한다.
-## HTTP 요청
+### HTTP 요청
 - 디렉토리: Http
 - 파일: Request.php
 - 서버에 들어온 HTTP 요청을 분석하여 메서드, 경로 추출 기능을 제공한다.
-## 데이터베이스
+### 데이터베이스
 - 디렉토리: Database
 - 파일: Adaptor.php
 - 내부에서 PDO를 사용하여 데이터베이스에 접근하다. prepared statement를 사용하여 sql injection을 대비한다.
 - `exec`메서드로 CRUD를 처리할 수 있다.
 - `getAll`메서드로 테이블에서 데이터를 가져온다. 클래스를 지정하여 해당 클래스의 인스턴스로 데이터를 받아올 수 있도록 하였다.
-## 세션
+### 세션
 - 디렉토리: Session
 - 파일: DatabaseSessionHandler.php
 - PHP에서 세션을 위해 지원하는 SessionHandlerInterface를 상속받아 클래스를 구성했다.
 - 내부에서 `Adaptor`클래스를 사용한다.
 - 세션에 저장한 데이터는 데이터베이스와 연동되어 관리된다.
-## 테마
+### 테마
 - 디렉토리: Support
 - 파일: Theme.php
 - 템플릿 엔진처럼 미리 작성된 레이아웃을 불러와 사용할 수 있도록 구조화 했다.
 - `view`메서드에서는 Variable variables($$를 이용하여 문자열을 변수 이름으로 치환하는 기법)을 사용하여 인자로 넘긴 연관 배열의 키를 레이아웃의 변수 이름으로 사용할 수 있다.
 - `setLayout`메서드는 한 번 호출되어 전체 레이아웃(헤더, 네비게이션, 메인, 푸터)을 책임진다. `view`메서드에서 바뀌는 것은 메인이 될 것이다.
-## ServiceProvider
+### ServiceProvider
 - 디렉토리: Support
 - 파일: ServiceProvider.php
 - ServiceProvider는 유저가 서비스(서버가 실행되는 동안 진행할 로직)를 등록할 수 있도록 제공하는 껍데기이다.
-- ServiceProvider라는 박스에 에러 핸들링, 세션 관리, 데이터베이스 제어, 라우팅, 테마 등의 기능을 담아 Application에 제공한다.
+- ServiceProvider는 에러 핸들링, 세션 관리, 데이터베이스 제어, 라우팅, 테마 등의 기능을 담아 Application에 제공한다.
 - 최초에 abstract class였지만 내부 동작이 없기에 interface로 변경하였다.
-## Application
+### Application
 - 디렉토리: 루트(src디렉토리)
 - 파일: Application.php
-- ServiceProidver로 받은 서비스들을 등록하고, 실행한다.
-- 유저는 제공하려는 서비스들을 ServiceProidver로 만들어 Application에 제공하여 자기 자신만의 웹 서비스를 만들 수 있다.
+- Application은 ServiceProvider를 받아 실행하는 역할이다. 
+- 라우팅, 세션 관리 등은 모든 로직은 사용자가 ServiceProvider로 정의하여 Application에 등록해야 한다.
+
 # 참고
 이 코드는 [PHP 7+ 프로그래밍: 객체지향](https://www.inflearn.com/course/php7-oop#reviews)강의를 바탕으로 작성함.
